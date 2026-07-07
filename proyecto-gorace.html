@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GoRace — Joel Ramos Mejías</title>
+<meta name="description" content="Proyecto en equipo: aplicación de escritorio para la gestión de carreras populares, desarrollada en C++ con arquitectura en 3 capas y metodología Scrum.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #F6F5F1;
+    --paper-line: #E1E0D8;
+    --ink: #1B2430;
+    --ink-soft: #55606C;
+    --blue: #2E5A88;
+    --blue-deep: #1E3E5F;
+    --amber: #C97A3A;
+    --card: #FFFFFF;
+    --radius: 3px;
+    --maxw: 900px;
+    --nav-bg: rgba(246,245,241,0.85);
+  }
+  html[data-theme="dark"]{
+    --paper: #10151C;
+    --paper-line: #232C36;
+    --ink: #E7ECF1;
+    --ink-soft: #93A1AD;
+    --blue: #6FA3D8;
+    --blue-deep: #12212F;
+    --amber: #E0964D;
+    --card: #161E27;
+    --nav-bg: rgba(16,21,28,0.88);
+  }
+  body, .card-box, nav{ transition: background-color .35s ease, color .35s ease, border-color .35s ease; }
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background:
+      linear-gradient(var(--paper-line) 1px, transparent 1px) 0 0/100% 32px,
+      var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection{ background: var(--blue); color:#fff; }
+  a{ color: inherit; }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+  .wrap{ max-width: var(--maxw); margin:0 auto; padding: 0 28px; }
+
+  nav{
+    position: sticky; top:0; z-index:50;
+    backdrop-filter: blur(8px);
+    background: var(--nav-bg);
+    border-bottom: 1px solid var(--paper-line);
+  }
+  nav .wrap{ display:flex; align-items:center; justify-content:space-between; height:64px; gap:16px; }
+  .back-link{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    text-decoration:none;
+    color: var(--ink-soft);
+    display:flex; align-items:center; gap:8px;
+    transition: color .2s ease;
+  }
+  .back-link:hover{ color: var(--blue); }
+  .nav-right{ display:flex; align-items:center; gap:14px; }
+
+  .theme-toggle{
+    width:34px; height:34px; border-radius:50%;
+    border:1px solid var(--paper-line);
+    background: var(--card);
+    color: var(--ink);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    transition: border-color .2s ease, transform .2s ease;
+  }
+  .theme-toggle:hover{ border-color: var(--blue); transform: translateY(-1px); }
+  .theme-toggle svg{ width:16px; height:16px; }
+  .theme-toggle .icon-moon{ display:none; }
+  html[data-theme="dark"] .theme-toggle .icon-sun{ display:none; }
+  html[data-theme="dark"] .theme-toggle .icon-moon{ display:inline-block; }
+
+  .lang-toggle{
+    display:flex; align-items:center;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    border:1px solid var(--paper-line);
+    border-radius:999px;
+    overflow:hidden;
+  }
+  .lang-toggle button{
+    border:none; background:transparent; color: var(--ink-soft);
+    padding:7px 12px; cursor:pointer; font-family:inherit; font-size:inherit;
+    transition: background .2s ease, color .2s ease;
+  }
+  .lang-toggle button.active{ background: var(--blue); color:#fff; }
+
+  main{ padding: 56px 0 90px; }
+
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px; color: var(--blue); margin-bottom:16px;
+  }
+  h1{
+    font-size: clamp(28px, 5vw, 40px);
+    line-height:1.1;
+    letter-spacing:-0.01em;
+    margin: 0 0 14px;
+    font-weight: 800;
+  }
+  .client-line{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    margin-bottom: 22px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .client-line img{ height:26px; width:auto; display:block; }
+  .tag-row{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom: 40px; }
+  .tag{
+    font-size:12.5px;
+    font-family:'JetBrains Mono', monospace;
+    padding:5px 10px;
+    border-radius:999px;
+    background: var(--paper);
+    border:1px solid var(--paper-line);
+    color: var(--ink-soft);
+  }
+
+  .gallery{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+  @media (max-width: 700px){ .gallery{ grid-template-columns: 1fr; } }
+  .gallery figure{ margin:0; }
+  .gallery img{
+    width:100%; display:block;
+    border-radius: var(--radius);
+    border: 1px solid var(--paper-line);
+  }
+  .gallery figcaption{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+
+  section.block{ margin-bottom: 44px; }
+  section.block h2{
+    font-size: 12.5px;
+    font-family:'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--blue);
+    margin: 0 0 14px;
+  }
+  section.block p{
+    margin: 0 0 12px;
+    font-size: 15.5px;
+    color: var(--ink-soft);
+  }
+
+  .card-box{
+    background: var(--card);
+    border: 1px solid var(--paper-line);
+    border-radius: var(--radius);
+    padding: 24px 26px;
+  }
+
+  .cta-row{ display:flex; gap:14px; flex-wrap:wrap; margin-top: 8px; }
+  .btn{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    text-decoration:none;
+    padding: 12px 20px;
+    border-radius: var(--radius);
+    display:inline-flex; align-items:center; gap:8px;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-primary{ background: var(--blue); color:#fff; }
+  .btn-primary:hover{ transform: translateY(-2px); box-shadow: 0 10px 20px -10px rgba(46,90,136,0.6); }
+  .btn-ghost{ border:1px solid var(--paper-line); color: var(--ink); }
+  .btn-ghost:hover{ border-color: var(--blue); color: var(--blue); transform: translateY(-2px); }
+  .btn svg{ width:15px; height:15px; }
+
+  .note-box{
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-style: italic;
+    border-left: 2px solid var(--paper-line);
+    padding-left: 14px;
+  }
+
+  footer{
+    padding: 30px 0 50px;
+    text-align:center;
+    font-family:'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+  }
+
+  @media (prefers-reduced-motion: reduce){ *{ transition: none !important; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="back-link" href="index.html#projects">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      <span data-i18n="back">Volver al portfolio</span>
+    </a>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle" aria-label="Cambiar entre modo claro y oscuro" title="Cambiar tema">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 14.7A8.5 8.5 0 1 1 9.3 3.5a7 7 0 0 0 11.2 11.2z"/></svg>
+      </button>
+      <div class="lang-toggle" role="group" aria-label="Cambiar idioma">
+        <button type="button" id="langEs" class="active">ES</button>
+        <button type="button" id="langEn">EN</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="wrap">
+    <div class="eyebrow mono" data-i18n="eyebrow">// proyecto_03 · proyecto en equipo</div>
+    <h1 data-i18n="title">GoRace — gestión de carreras populares</h1>
+    <div class="client-line"><img src="assets/gorace-logo.png" alt="Logo de GoRace" style="height:34px; border-radius:6px;"> Proyecto en equipo · UPC</div>
+    <div class="tag-row">
+      <span class="tag">C++</span><span class="tag">Windows Forms</span><span class="tag">MySQL</span>
+      <span class="tag">Scrum</span><span class="tag">Arquitectura 3 capas</span>
+    </div>
+
+    <div class="gallery">
+      <figure>
+        <img src="assets/gorace-diagram-er.png" alt="Diagrama de clases de dominio y base de datos de GoRace">
+        <figcaption data-i18n="cap1">Diagrama de clases de dominio: usuarios, carreras, inscripciones y resultados.</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/gorace-diagram-class.png" alt="Diagrama de clases de diseño de GoRace con reglas de integridad">
+        <figcaption data-i18n="cap2">Diagrama de diseño con el patrón Singleton y las reglas de integridad del sistema.</figcaption>
+      </figure>
+    </div>
+
+    <section class="block">
+      <h2 data-i18n="h.project">// el proyecto</h2>
+      <p data-i18n="p.project1">GoRace es una aplicación de escritorio para la gestión de carreras populares, desarrollada en equipo de 7 personas para la asignatura "Ampliació a l'Enginyeria del Programari" de la UPC. Permite a organizadores crear y administrar carreras, a corredores inscribirse y consultar resultados, y a administradores gestionar la plataforma.</p>
+      <p data-i18n="p.project2">Está construida en <strong>C++</strong> con interfaz en <strong>Windows Forms</strong> y base de datos <strong>MySQL</strong>, siguiendo una arquitectura en tres capas (presentación, servicios y repositorios) que separa claramente la interfaz, la lógica de negocio y el acceso a datos.</p>
+      <p data-i18n="p.project3">El proyecto se desarrolló siguiendo la metodología ágil <strong>Scrum</strong>, a lo largo de 3 iteraciones, con gestión del backlog en Taiga, reuniones de revisión y retrospectiva al final de cada sprint.</p>
+    </section>
+
+    <section class="block">
+      <h2 data-i18n="h.role">// mi rol</h2>
+      <p data-i18n="p.role">Fui responsable de la fase de <strong>Incepció</strong>, definiendo junto al equipo el alcance inicial y las historias de usuario del proyecto. A lo largo de las 3 iteraciones me encargué de: el registro de corredores y organizadores (iteración 1); la interfaz y la lógica para eliminar usuarios (iteración 2); y en la iteración final, la implementación del mapa interactivo con el punto de inicio, el punto final y el recorrido de cada carrera, la eliminación de corredores desde el perfil de organizador y de usuarios desde el perfil de administrador, la corrección de varios errores detectados en las pruebas, la unificación de la página principal con las pantallas de login y registro, y la preparación de la presentación final del proyecto.</p>
+    </section>
+
+    <section class="block">
+      <h2 data-i18n="h.links">// enlaces</h2>
+      <div class="card-box">
+        <p style="margin-bottom:16px;" data-i18n="p.linksDesc">Puedes revisar el código del proyecto en el repositorio:</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="https://github.com/GoRace-Project/GoRaceApp" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49 0-.24-.01-1.04-.01-1.89-2.78.62-3.37-1.21-3.37-1.21-.45-1.18-1.11-1.49-1.11-1.49-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.89 1.57 2.34 1.12 2.91.86.09-.66.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.72 0 0 .84-.27 2.75 1.05a9.3 9.3 0 0 1 5 0c1.9-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.46.1 2.72.64.72 1.03 1.63 1.03 2.75 0 3.93-2.35 4.8-4.58 5.05.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg>
+            <span data-i18n="btn.repo">Ver repositorio</span>
+          </a>
+          <a class="btn btn-ghost" href="index.html#contact">
+            <span data-i18n="btn.contact">Hablar con Joel →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <span data-i18n="footer">Diseñado &amp; construido por Joel Ramos Mejías</span> — <span id="year"></span>
+</footer>
+
+<script>
+  const TRANSLATIONS = {
+    back: { es: 'Volver al portfolio', en: 'Back to portfolio' },
+    eyebrow: { es: '// proyecto_03 · proyecto en equipo', en: '// project_03 · team project' },
+    title: { es: 'GoRace — gestión de carreras populares', en: 'GoRace — running race management' },
+    cap1: { es: 'Diagrama de clases de dominio: usuarios, carreras, inscripciones y resultados.', en: 'Domain class diagram: users, races, registrations and results.' },
+    cap2: { es: 'Diagrama de diseño con el patrón Singleton y las reglas de integridad del sistema.', en: 'Design diagram with the Singleton pattern and the system integrity rules.' },
+    'h.project': { es: '// el proyecto', en: '// the project' },
+    'p.project1': { es: 'GoRace es una aplicación de escritorio para la gestión de carreras populares, desarrollada en equipo de 7 personas para la asignatura "Ampliació a l\'Enginyeria del Programari" de la UPC. Permite a organizadores crear y administrar carreras, a corredores inscribirse y consultar resultados, y a administradores gestionar la plataforma.', en: 'GoRace is a desktop application for managing running races, built by a 7-person team for the "Ampliació a l\'Enginyeria del Programari" course at UPC. It lets organizers create and manage races, runners register and check results, and admins manage the platform.' },
+    'p.project2': { es: 'Está construida en <strong>C++</strong> con interfaz en <strong>Windows Forms</strong> y base de datos <strong>MySQL</strong>, siguiendo una arquitectura en tres capas (presentación, servicios y repositorios) que separa claramente la interfaz, la lógica de negocio y el acceso a datos.', en: 'It is built in <strong>C++</strong> with a <strong>Windows Forms</strong> interface and a <strong>MySQL</strong> database, following a three-layer architecture (presentation, services and repositories) that clearly separates the UI, business logic and data access.' },
+    'p.project3': { es: 'El proyecto se desarrolló siguiendo la metodología ágil <strong>Scrum</strong>, a lo largo de 3 iteraciones, con gestión del backlog en Taiga, reuniones de revisión y retrospectiva al final de cada sprint.', en: 'The project was built following the <strong>Scrum</strong> agile methodology, across 3 iterations, with backlog management in Taiga, and review and retrospective meetings at the end of each sprint.' },
+    'h.role': { es: '// mi rol', en: '// my role' },
+    'p.role': { es: 'Fui responsable de la fase de <strong>Incepció</strong>, definiendo junto al equipo el alcance inicial y las historias de usuario del proyecto. A lo largo de las 3 iteraciones me encargué de: el registro de corredores y organizadores (iteración 1); la interfaz y la lógica para eliminar usuarios (iteración 2); y en la iteración final, la implementación del mapa interactivo con el punto de inicio, el punto final y el recorrido de cada carrera, la eliminación de corredores desde el perfil de organizador y de usuarios desde el perfil de administrador, la corrección de varios errores detectados en las pruebas, la unificación de la página principal con las pantallas de login y registro, y la preparación de la presentación final del proyecto.', en: 'I was responsible for the <strong>Incepció</strong> (inception) phase, defining the initial scope and user stories with the team. Across the 3 iterations I worked on: runner and organizer registration (iteration 1); the interface and logic for deleting users (iteration 2); and in the final iteration, the interactive map showing each race\'s start point, end point and route, deleting runners from the organizer profile and users from the admin profile, fixing several bugs found during testing, unifying the home page with the login/registration screens, and preparing the final project presentation.' },
+    'h.links': { es: '// enlaces', en: '// links' },
+    'p.linksDesc': { es: 'Puedes revisar el código del proyecto en el repositorio:', en: "You can check the project's code in the repository:" },
+    'btn.repo': { es: 'Ver repositorio', en: 'View repository' },
+    'btn.contact': { es: 'Hablar con Joel →', en: 'Talk to Joel →' },
+    footer: { es: 'Diseñado &amp; construido por Joel Ramos Mejías', en: 'Designed &amp; built by Joel Ramos Mejías' }
+  };
+
+  const LANG_KEY = 'joel-portfolio-lang';
+  const THEME_KEY = 'joel-portfolio-theme';
+  const root = document.documentElement;
+
+  function setLang(lang){
+    root.lang = lang;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const entry = TRANSLATIONS[el.getAttribute('data-i18n')];
+      if (entry && entry[lang]) el.innerHTML = entry[lang];
+    });
+    document.getElementById('langEs').classList.toggle('active', lang === 'es');
+    document.getElementById('langEn').classList.toggle('active', lang === 'en');
+    localStorage.setItem(LANG_KEY, lang);
+  }
+  document.getElementById('langEs').addEventListener('click', () => setLang('es'));
+  document.getElementById('langEn').addEventListener('click', () => setLang('en'));
+  setLang(localStorage.getItem(LANG_KEY) === 'en' ? 'en' : 'es');
+
+  function applyTheme(theme){ root.setAttribute('data-theme', theme); }
+  const savedTheme = localStorage.getItem(THEME_KEY);
+  if (savedTheme){ applyTheme(savedTheme); }
+  else { applyTheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); }
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    localStorage.setItem(THEME_KEY, next);
+  });
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>

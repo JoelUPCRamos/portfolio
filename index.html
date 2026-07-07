@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Joel Ramos Mejías — Ingeniería Informática</title>
+<meta name="description" content="Portfolio de Joel Ramos Mejías, estudiante de Ingeniería Informática en la UPC EPSEVG, en búsqueda de prácticas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #F6F5F1;
+    --paper-line: #E1E0D8;
+    --ink: #1B2430;
+    --ink-soft: #55606C;
+    --blue: #2E5A88;
+    --blue-deep: #1E3E5F;
+    --amber: #C97A3A;
+    --card: #FFFFFF;
+    --radius: 3px;
+    --maxw: 980px;
+    --nav-bg: rgba(246,245,241,0.85);
+  }
+
+  html[data-theme="dark"]{
+    --paper: #10151C;
+    --paper-line: #232C36;
+    --ink: #E7ECF1;
+    --ink-soft: #93A1AD;
+    --blue: #6FA3D8;
+    --blue-deep: #12212F;
+    --amber: #E0964D;
+    --card: #161E27;
+    --nav-bg: rgba(16,21,28,0.88);
+  }
+
+  body, .skill-card, .contact-card, .terminal, nav{
+    transition: background-color .35s ease, color .35s ease, border-color .35s ease;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background:
+      linear-gradient(var(--paper-line) 1px, transparent 1px) 0 0/100% 32px,
+      var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection{ background: var(--blue); color: #fff; }
+
+  a{ color: inherit; }
+
+  .mono{ font-family: 'JetBrains Mono', monospace; }
+
+  .wrap{
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(8px);
+    background: var(--nav-bg);
+    border-bottom: 1px solid var(--paper-line);
+  }
+  nav .wrap{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    height: 64px;
+    gap: 16px;
+  }
+  .brand{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:600;
+    font-size: 15px;
+    text-decoration:none;
+    letter-spacing: -0.02em;
+  }
+  .brand .dot{ color: var(--amber); }
+  .navlinks{
+    display:flex;
+    gap: 28px;
+    list-style:none;
+    margin:0; padding:0;
+  }
+  .navlinks a{
+    text-decoration:none;
+    font-size: 13.5px;
+    font-family:'JetBrains Mono', monospace;
+    color: var(--ink-soft);
+    position: relative;
+    padding: 4px 0;
+    transition: color .2s ease;
+  }
+  .navlinks a::before{ content: "· "; color: var(--amber); }
+  .navlinks a:hover{ color: var(--ink); }
+  .navlinks li{ display:flex; }
+  @media (max-width: 640px){ .navlinks{ display:none; } }
+
+  /* ---------- THEME TOGGLE ---------- */
+  .nav-right{ display:flex; align-items:center; gap:24px; }
+  .theme-toggle{
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: 1px solid var(--paper-line);
+    background: var(--card);
+    color: var(--ink);
+    display:flex; align-items:center; justify-content:center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: border-color .2s ease, transform .2s ease;
+  }
+  .theme-toggle:hover{ border-color: var(--blue); transform: translateY(-1px); }
+  .theme-toggle svg{ width:16px; height:16px; }
+  .theme-toggle .icon-moon{ display:none; }
+  html[data-theme="dark"] .theme-toggle .icon-sun{ display:none; }
+  html[data-theme="dark"] .theme-toggle .icon-moon{ display:inline-block; }
+
+  .lang-toggle{
+    display:flex;
+    align-items:center;
+    font-family:'JetBrains Mono', monospace;
+    font-size: 12px;
+    border: 1px solid var(--paper-line);
+    border-radius: 999px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .lang-toggle button{
+    border:none;
+    background: transparent;
+    color: var(--ink-soft);
+    padding: 7px 12px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    transition: background .2s ease, color .2s ease;
+  }
+  .lang-toggle button.active{
+    background: var(--blue);
+    color: #fff;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding: 110px 0 90px;
+    border-bottom: 1px solid var(--paper-line);
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--blue);
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom: 22px;
+  }
+  .eyebrow .blip{
+    width:7px; height:7px; border-radius:50%;
+    background: var(--amber);
+    animation: blip 1.8s infinite ease-in-out;
+  }
+  @keyframes blip{ 0%,100%{opacity:1} 50%{opacity:.25} }
+
+  .hero h1{
+    font-size: clamp(34px, 6vw, 58px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 0 0 20px;
+    font-weight: 800;
+  }
+  .hero h1 span{ color: var(--blue); }
+
+  .hero p.lede{
+    max-width: 560px;
+    font-size: 17px;
+    color: var(--ink-soft);
+    margin: 0 0 40px;
+  }
+
+  .terminal{
+    background: var(--blue-deep);
+    color: #DCE6F0;
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    font-family:'JetBrains Mono', monospace;
+    font-size: 14px;
+    max-width: 560px;
+    box-shadow: 0 12px 30px -14px rgba(30,62,95,0.55);
+    overflow: hidden;
+    min-height: 108px;
+  }
+  .terminal .bar{
+    display:flex; gap:6px; margin-bottom: 14px;
+  }
+  .terminal .bar span{
+    width:9px; height:9px; border-radius:50%;
+    background: rgba(255,255,255,0.18);
+  }
+  .terminal .line{
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    line-height: 1.5;
+  }
+  .terminal .prompt{ color: #7FB2E8; }
+  .terminal .cursor{
+    display:inline-block; width:7px; height:15px;
+    background:#DCE6F0; margin-left:2px;
+    animation: blink 1s steps(1) infinite;
+    vertical-align: -2px;
+  }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  .cta-row{
+    display:flex; gap:14px; margin-top: 36px; flex-wrap: wrap;
+  }
+
+  /* ---------- HERO LAYOUT + PHOTO ---------- */
+  .hero .wrap{
+    display:flex;
+    align-items:flex-start;
+    justify-content: space-between;
+    gap: 56px;
+  }
+  .hero-copy{ flex: 1 1 auto; min-width: 0; }
+  .hero-photo{
+    flex: 0 0 auto;
+    position: relative;
+  }
+  .hero-photo .frame{
+    width: 190px;
+    height: 230px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--paper-line);
+    box-shadow: 0 18px 34px -18px rgba(27,36,48,0.35);
+    background: var(--card);
+  }
+  .hero-photo img{
+    width:100%; height:100%;
+    object-fit: cover;
+    display:block;
+    filter: grayscale(0.15) contrast(1.03);
+  }
+  .hero-photo .tag-label{
+    position:absolute;
+    bottom: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--blue);
+    color:#fff;
+    font-family:'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  @media (max-width: 780px){
+    .hero .wrap{ flex-direction: column-reverse; gap: 32px; }
+    .hero-photo .frame{ width: 150px; height: 182px; }
+  }
+  .btn{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    text-decoration:none;
+    padding: 12px 20px;
+    border-radius: var(--radius);
+    display:inline-flex; align-items:center; gap:8px;
+    transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+  }
+  .btn-primary{ background: var(--blue); color:#fff; }
+  .btn-primary:hover{ transform: translateY(-2px); box-shadow: 0 10px 20px -10px rgba(46,90,136,0.6); }
+  .btn-ghost{ border:1px solid var(--paper-line); color: var(--ink); background: transparent; }
+  .btn-ghost:hover{ border-color: var(--blue); color: var(--blue); transform: translateY(-2px); }
+
+  /* ---------- SECTION SHELL ---------- */
+  section{ padding: 84px 0; border-bottom: 1px solid var(--paper-line); }
+  section:last-of-type{ border-bottom: none; }
+
+  .section-head{
+    display:flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  .section-num{
+    font-family:'JetBrains Mono', monospace;
+    color: var(--paper-line);
+    font-size: 42px;
+    font-weight: 700;
+    line-height:1;
+  }
+  .section-title{
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    margin:0;
+  }
+  .section-tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+  }
+
+  .reveal{
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  .reveal.in{ opacity:1; transform: translateY(0); }
+
+  /* ---------- ABOUT ---------- */
+  .about-grid{
+    display:grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 48px;
+  }
+  @media (max-width: 720px){ .about-grid{ grid-template-columns: 1fr; } }
+  .about-grid p{ color: var(--ink-soft); font-size: 15.5px; margin: 0 0 16px; }
+  .facts{
+    border-left: 2px solid var(--paper-line);
+    padding-left: 22px;
+    display:flex; flex-direction:column; gap:18px;
+  }
+  .fact dt{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--blue);
+    margin-bottom: 3px;
+  }
+  .fact dd{ margin:0; font-size:14.5px; }
+
+  /* ---------- SKILLS ---------- */
+  .skill-groups{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 720px){ .skill-groups{ grid-template-columns: 1fr; } }
+  .skill-card{
+    background: var(--card);
+    border: 1px solid var(--paper-line);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  }
+  .skill-card:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 14px 26px -18px rgba(27,36,48,0.35);
+    border-color: var(--blue);
+  }
+  .skill-card h3{
+    margin: 0 0 14px;
+    font-size: 14.5px;
+    font-family:'JetBrains Mono', monospace;
+    color: var(--blue);
+    display:flex; align-items:center; gap:8px;
+  }
+  .skill-card h3::before{ content:"//"; color:var(--amber); }
+  .tag-row{ display:flex; flex-wrap:wrap; gap:8px; }
+  .tag{
+    font-size: 12.5px;
+    font-family:'JetBrains Mono', monospace;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: var(--paper);
+    border: 1px solid var(--paper-line);
+    color: var(--ink-soft);
+  }
+
+  .note{
+    margin-top: 22px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+
+  /* ---------- EDUCATION TIMELINE ---------- */
+  .timeline{
+    position: relative;
+    padding-left: 28px;
+  }
+  .timeline::before{
+    content:"";
+    position:absolute; left:6px; top:6px; bottom:6px;
+    width:2px; background: var(--paper-line);
+  }
+  .tl-item{ position:relative; padding-bottom: 30px; }
+  .tl-item:last-child{ padding-bottom:0; }
+  .tl-item::before{
+    content:"";
+    position:absolute; left:-28px; top:4px;
+    width:13px; height:13px; border-radius:50%;
+    background: var(--card);
+    border: 2px solid var(--blue);
+  }
+  .tl-item h4{ margin:0 0 4px; font-size:16px; }
+  .tl-item .tl-meta{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    color: var(--blue);
+    margin-bottom: 8px;
+  }
+  .tl-item p{ margin:0; color: var(--ink-soft); font-size: 14.5px; }
+
+  /* ---------- PROJECTS ---------- */
+  .proj-grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 860px){ .proj-grid{ grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px){ .proj-grid{ grid-template-columns: 1fr; } }
+  .proj-card{
+    border: 1px dashed var(--paper-line);
+    border-radius: var(--radius);
+    padding: 26px 20px;
+    min-height: 150px;
+    display:flex; flex-direction:column; justify-content: center; align-items:flex-start;
+    color: var(--ink-soft);
+  }
+  .proj-card .proj-idx{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--amber);
+    margin-bottom: 10px;
+  }
+  .proj-card strong{ color: var(--ink); font-size: 14.5px; }
+
+  /* ---------- FEATURED PROJECT ---------- */
+  .proj-featured{
+    display:grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--paper-line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--card);
+    margin-bottom: 20px;
+    transition: border-color .2s ease, box-shadow .2s ease;
+  }
+  .proj-featured:hover{
+    border-color: var(--blue);
+    box-shadow: 0 20px 40px -24px rgba(27,36,48,0.35);
+  }
+  @media (max-width: 780px){ .proj-featured{ grid-template-columns: 1fr; } }
+
+  .proj-featured .pf-media{
+    position: relative;
+    display: block;
+    min-height: 220px;
+    background: var(--blue-deep);
+    overflow: hidden;
+  }
+  .proj-featured .pf-media img{
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display:block;
+  }
+  .pf-media-logo{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background: linear-gradient(135deg, var(--blue-deep), var(--blue));
+  }
+  .pf-media-logo .pf-logo-img{
+    width: auto;
+    height: 55%;
+    object-fit: contain;
+    border-radius: 14px;
+    box-shadow: 0 14px 30px -14px rgba(0,0,0,0.5);
+  }
+  .proj-featured .pf-tag{
+    position:absolute;
+    top: 14px; left: 14px;
+    font-family:'JetBrains Mono', monospace;
+    font-size: 11px;
+    background: rgba(16,21,28,0.75);
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 999px;
+    letter-spacing: .03em;
+  }
+  .proj-featured .pf-body{
+    padding: 30px 32px;
+    display:flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .proj-featured .pf-client{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--blue);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .pf-client img{
+    height: 20px;
+    width: auto;
+    display:block;
+  }
+  .proj-featured h3{
+    margin: 0;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+  }
+  .proj-featured p{
+    margin:0;
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height:1.6;
+  }
+  .proj-featured .pf-tags{
+    display:flex; flex-wrap:wrap; gap:8px;
+  }
+  .proj-featured .pf-links{
+    display:flex; gap: 14px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+  }
+  .proj-featured .pf-link{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 13px;
+    text-decoration:none;
+    color: var(--ink);
+    display:flex; align-items:center; gap:6px;
+    border-bottom: 1px solid var(--paper-line);
+    padding-bottom: 2px;
+    transition: color .2s ease, border-color .2s ease;
+  }
+  .proj-featured .pf-link:hover{ color: var(--blue); border-color: var(--blue); }
+  .proj-featured .pf-link svg{ width:15px; height:15px; }
+  .pf-link-disabled{
+    color: var(--ink-soft) !important;
+    cursor: default;
+    font-style: italic;
+  }
+  .pf-link-disabled:hover{ color: var(--ink-soft) !important; border-color: var(--paper-line) !important; }
+
+  .proj-grid-secondary{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 560px){ .proj-grid-secondary{ grid-template-columns: 1fr; } }
+
+  /* ---------- CONTACT ---------- */
+  .contact-card{
+    background: var(--blue-deep);
+    color: #EAF0F6;
+    border-radius: var(--radius);
+    padding: 40px;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 30px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .contact-card h2{
+    margin: 0 0 8px;
+    font-size: 26px;
+  }
+  .contact-card p{ margin:0; color:#B9CBDB; max-width: 380px; font-size: 14.5px; }
+  .contact-links{ display:flex; flex-direction:column; gap:12px; }
+  .contact-links a{
+    text-decoration:none;
+    font-family:'JetBrains Mono', monospace;
+    font-size: 14px;
+    display:flex; align-items:center; gap:10px;
+    color:#EAF0F6;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    transition: color .2s ease, gap .2s ease;
+  }
+  .contact-links a:hover{ color: var(--amber); gap: 14px; }
+  .contact-links svg{ width:16px; height:16px; flex-shrink:0; }
+
+  /* ---------- CONTACT FORM ---------- */
+  .contact-layout{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 780px){ .contact-layout{ grid-template-columns: 1fr; } }
+  .contact-form{
+    background: var(--card);
+    border: 1px solid var(--paper-line);
+    border-radius: var(--radius);
+    padding: 32px;
+    display:flex;
+    flex-direction:column;
+    gap: 16px;
+  }
+  .form-field{ display:flex; flex-direction:column; gap:6px; }
+  .form-field label{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+  .form-field input, .form-field textarea{
+    font-family: 'Inter', sans-serif;
+    font-size: 14.5px;
+    padding: 11px 13px;
+    border-radius: var(--radius);
+    border: 1px solid var(--paper-line);
+    background: var(--paper);
+    color: var(--ink);
+    resize: vertical;
+  }
+  .form-field input:focus, .form-field textarea:focus{
+    outline: none;
+    border-color: var(--blue);
+  }
+  .form-submit{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    padding: 12px 20px;
+    border-radius: var(--radius);
+    border: none;
+    background: var(--blue);
+    color: #fff;
+    cursor: pointer;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .form-submit:hover{ transform: translateY(-2px); box-shadow: 0 10px 20px -10px rgba(46,90,136,0.6); }
+  .form-submit:disabled{ opacity:.6; cursor: not-allowed; transform:none; }
+  .form-status{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    min-height: 16px;
+  }
+  .form-status.ok{ color: #3F9860; }
+  .form-status.err{ color: #C0503D; }
+
+  footer{
+    padding: 30px 0 50px;
+    text-align:center;
+    font-family:'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation: none !important; transition: none !important; }
+    .reveal{ opacity:1; transform:none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="#top" class="brand">joel<span class="dot">.</span>dev</a>
+    <div class="nav-right">
+      <ul class="navlinks">
+        <li><a href="#about" data-i18n="nav.about">sobre-mi</a></li>
+        <li><a href="#skills" data-i18n="nav.skills">habilidades</a></li>
+        <li><a href="#education" data-i18n="nav.education">formacion</a></li>
+        <li><a href="#projects" data-i18n="nav.projects">proyectos</a></li>
+        <li><a href="#contact" data-i18n="nav.contact">contacto</a></li>
+      </ul>
+      <button class="theme-toggle" id="themeToggle" aria-label="Cambiar entre modo claro y oscuro" title="Cambiar tema">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 14.7A8.5 8.5 0 1 1 9.3 3.5a7 7 0 0 0 11.2 11.2z"/></svg>
+      </button>
+      <div class="lang-toggle" role="group" aria-label="Cambiar idioma">
+        <button type="button" id="langEs" class="active">ES</button>
+        <button type="button" id="langEn">EN</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="hero-copy">
+      <div class="eyebrow"><span class="blip"></span> <span data-i18n="hero.eyebrow">DISPONIBLE PARA PRÁCTICAS</span></div>
+      <h1>Joel Ramos Mejías<br><span data-i18n="hero.role">Ingeniería Informática</span></h1>
+      <p class="lede" data-i18n="hero.lede">Estudiante de Ingeniería Informática en la UPC · EPSEVG, en búsqueda activa de prácticas donde aportar y seguir aprendiendo sobre desarrollo de software y sistemas.</p>
+
+      <div class="terminal">
+        <div class="bar"><span></span><span></span><span></span></div>
+        <div class="line"><span class="prompt">joel@epsevg</span>:~$ <span id="typed"></span><span class="cursor"></span></div>
+      </div>
+
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#contact" data-i18n="hero.cta.talk">Hablemos →</a>
+        <a class="btn btn-ghost" href="Joel-Ramos-Mejias-CV.pdf" download data-i18n="hero.cta.cv">Descargar CV</a>
+        <a class="btn btn-ghost" href="https://github.com/JoelUPCRamos" target="_blank" rel="noopener" data-i18n="hero.cta.github">Ver GitHub</a>
+      </div>
+    </div>
+
+    <div class="hero-photo">
+      <div class="frame">
+        <img src="joel-photo.jpg" alt="Foto de Joel Ramos Mejías">
+      </div>
+      <span class="tag-label">joel.jpg</span>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-num">01</span>
+      <div>
+        <h2 class="section-title" data-i18n="about.title">Sobre mí</h2>
+        <div class="section-tag" data-i18n="about.tag">// perfil</div>
+      </div>
+    </div>
+
+    <div class="about-grid reveal">
+      <div>
+        <p data-i18n="about.p1">Soy estudiante de Ingeniería Informática en la EPSEVG (UPC), y estoy en la recta final de mi formación en busca de unas prácticas donde poder aplicar lo aprendido durante la carrera en un entorno profesional real.</p>
+        <p data-i18n="about.p2">A lo largo del grado he trabajado con distintas áreas de la informática: programación en varios lenguajes, bases de datos, sistemas y redes, y desarrollo de aplicaciones. Me interesa especialmente el desarrollo de software y todo lo relacionado con backend y bases de datos, aunque tengo curiosidad por explorar distintos campos antes de especializarme.</p>
+        <p data-i18n="about.p3">Busco un equipo donde pueda seguir aprendiendo, aportar valor desde el primer día y crecer como ingeniero.</p>
+      </div>
+      <dl class="facts">
+        <div class="fact"><dt data-i18n="about.fact.uni.label">Universidad</dt><dd>UPC · EPSEVG</dd></div>
+        <div class="fact"><dt data-i18n="about.fact.degree.label">Titulación</dt><dd data-i18n="about.fact.degree.value">Grado en Ingeniería Informática</dd></div>
+        <div class="fact"><dt data-i18n="about.fact.looking.label">Buscando</dt><dd data-i18n="about.fact.looking.value">Prácticas / Convenio de Cooperación Educativa</dd></div>
+        <div class="fact"><dt data-i18n="about.fact.location.label">Ubicación</dt><dd>Vilanova i la Geltrú, Barcelona</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-num">02</span>
+      <div>
+        <h2 class="section-title" data-i18n="skills.title">Habilidades técnicas</h2>
+        <div class="section-tag" data-i18n="skills.tag">// tecnologías aprendidas durante el grado</div>
+      </div>
+    </div>
+
+    <div class="skill-groups reveal">
+      <div class="skill-card">
+        <h3 data-i18n="skills.cat.languages">lenguajes</h3>
+        <div class="tag-row">
+          <span class="tag">C</span><span class="tag">C++</span><span class="tag">Java</span>
+          <span class="tag">Python</span><span class="tag">SQL</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3 data-i18n="skills.cat.databases">bases-de-datos</h3>
+        <div class="tag-row">
+          <span class="tag">SQL</span><span class="tag" data-i18n="skills.tag.relational">Modelado relacional</span><span class="tag">PostgreSQL / MySQL</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3 data-i18n="skills.cat.systems">sistemas-y-redes</h3>
+        <div class="tag-row">
+          <span class="tag">Linux</span><span class="tag" data-i18n="skills.tag.os">Sistemas Operativos</span><span class="tag">Redes / TCP-IP</span>
+          <span class="tag" data-i18n="skills.tag.arch">Arquitectura de computadores</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3 data-i18n="skills.cat.dev">desarrollo</h3>
+        <div class="tag-row">
+          <span class="tag" data-i18n="skills.tag.structures">Estructuras de datos</span><span class="tag" data-i18n="skills.tag.algorithms">Algoritmia</span>
+          <span class="tag" data-i18n="skills.tag.softeng">Ingeniería del software</span><span class="tag">Git</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3 data-i18n="skills.cat.interests">areas-de-interes</h3>
+        <div class="tag-row">
+          <span class="tag">Unity</span><span class="tag" data-i18n="skills.tag.ai">Inteligencia Artificial</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3 data-i18n="skills.cat.web">web</h3>
+        <div class="tag-row">
+          <span class="tag">HTML / CSS</span><span class="tag">JavaScript</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-num">03</span>
+      <div>
+        <h2 class="section-title" data-i18n="education.title">Formación</h2>
+        <div class="section-tag" data-i18n="education.tag">// trayectoria académica</div>
+      </div>
+    </div>
+
+    <div class="timeline reveal">
+      <div class="tl-item">
+        <h4 data-i18n="education.item1.title">Grado en Ingeniería Informática</h4>
+        <div class="tl-meta">UPC · EPSEVG — Vilanova i la Geltrú</div>
+        <p data-i18n="education.item1.desc">Formación en programación, algoritmia, estructuras de datos, arquitectura de computadores, sistemas operativos, redes, bases de datos, ingeniería del software, ciberseguridad e inteligencia artificial.</p>
+      </div>
+      <div class="tl-item">
+        <h4 data-i18n="education.item2.title">Búsqueda de prácticas</h4>
+        <div class="tl-meta" data-i18n="education.item2.meta">Actualidad</div>
+        <p data-i18n="education.item2.desc">Buscando una empresa donde realizar el convenio de cooperación educativa y seguir formándome como ingeniero informático.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-num">04</span>
+      <div>
+        <h2 class="section-title" data-i18n="projects.title">Proyectos</h2>
+        <div class="section-tag" data-i18n="projects.tag">// 3 proyectos destacados</div>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="proj-featured">
+        <a class="pf-media" href="proyecto-gedia.html" aria-label="Ver detalle del proyecto GEDIA">
+          <img src="assets/gedia-01.jpg" alt="Captura de la formación VR para GEDIA, vista del puesto de trabajo con panel OK/NOK">
+          <span class="pf-tag" data-i18n="proj.gedia.tagpill">proyecto_01 · cliente real</span>
+        </a>
+        <div class="pf-body">
+          <div class="pf-client"><img src="assets/gedia-logo.png" alt="Logo de GEDIA"> Automotive Group</div>
+          <h3><a href="proyecto-gedia.html" style="color:inherit; text-decoration:none;" data-i18n="proj.gedia.title">Formación VR para nuevos operarios</a></h3>
+          <p data-i18n="proj.gedia.desc">Aplicación de Realidad Virtual desarrollada en Unity para GEDIA, multinacional del sector de automoción. Simula puestos de una línea de producción para que los nuevos operarios practiquen el montaje y la verificación de piezas (OK/NOK) en un entorno seguro antes de pisar la planta real.</p>
+          <div class="pf-tags">
+            <span class="tag">Unity</span><span class="tag">C#</span><span class="tag">Realidad Virtual</span><span class="tag">Gamificación</span>
+          </div>
+          <div class="pf-links">
+            <a class="pf-link" href="proyecto-gedia.html" data-i18n="proj.gedia.viewmore">Ver detalle →</a>
+            <span class="pf-link pf-link-disabled">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+              <span data-i18n="proj.gedia.private">Repositorio privado</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="reveal" style="margin-top:20px;">
+      <div class="proj-featured">
+        <a class="pf-media" href="proyecto-oust.html" aria-label="Ver detalle del proyecto Oust">
+          <img src="assets/oust-01.jpg" alt="Captura del tablero del juego Oust con la IA Minimax jugando">
+          <span class="pf-tag" data-i18n="proj.oust.tagpill">proyecto_02 · proyecto académico</span>
+        </a>
+        <div class="pf-body">
+          <div class="pf-client mono">UPC · Assignatura PROP</div>
+          <h3><a href="proyecto-oust.html" style="color:inherit; text-decoration:none;" data-i18n="proj.oust.title">IA para el juego de tablero Oust</a></h3>
+          <p data-i18n="proj.oust.desc">Proyecto final de la asignatura PROP (Projecte de Programació) de la UPC: implementación en Java del juego de tablero Oust junto con una inteligencia artificial basada en el algoritmo Minimax con Iterative Deepening Search (IDS), capaz de jugar partidas completas contra un humano u otra IA.</p>
+          <div class="pf-tags">
+            <span class="tag">Java</span><span class="tag">Minimax</span><span class="tag">IDS</span><span class="tag">Algoritmia</span>
+          </div>
+          <div class="pf-links">
+            <a class="pf-link" href="proyecto-oust.html" data-i18n="proj.oust.viewmore">Ver detalle →</a>
+            <a class="pf-link" href="https://github.com/JoelUPCRamos/PROP-OUST-Minimax" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49 0-.24-.01-1.04-.01-1.89-2.78.62-3.37-1.21-3.37-1.21-.45-1.18-1.11-1.49-1.11-1.49-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.89 1.57 2.34 1.12 2.91.86.09-.66.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.72 0 0 .84-.27 2.75 1.05a9.3 9.3 0 0 1 5 0c1.9-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.46.1 2.72.64.72 1.03 1.63 1.03 2.75 0 3.93-2.35 4.8-4.58 5.05.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal" style="margin-top:20px;">
+      <div class="proj-featured">
+        <a class="pf-media pf-media-logo" href="proyecto-gorace.html" aria-label="Ver detalle del proyecto GoRace">
+          <img src="assets/gorace-logo.png" alt="Logo del proyecto GoRace" class="pf-logo-img">
+          <span class="pf-tag" data-i18n="proj.gorace.tagpill">proyecto_03 · proyecto en equipo</span>
+        </a>
+        <div class="pf-body">
+          <div class="pf-client mono">UPC · Ampliació a l'Enginyeria del Programari</div>
+          <h3><a href="proyecto-gorace.html" style="color:inherit; text-decoration:none;" data-i18n="proj.gorace.title">GoRace — gestión de carreras populares</a></h3>
+          <p data-i18n="proj.gorace.desc">Aplicación de escritorio para la gestión de carreras populares: creación y administración de carreras, inscripción de corredores, resultados y clasificaciones. Desarrollada en equipo de 7 personas con C++ y Windows Forms, con arquitectura en 3 capas y metodología ágil (Scrum) a lo largo de 3 iteraciones.</p>
+          <div class="pf-tags">
+            <span class="tag">C++</span><span class="tag">Windows Forms</span><span class="tag">MySQL</span><span class="tag">Scrum</span>
+          </div>
+          <div class="pf-links">
+            <a class="pf-link" href="proyecto-gorace.html" data-i18n="proj.gorace.viewmore">Ver detalle →</a>
+            <a class="pf-link" href="https://github.com/GoRace-Project/GoRaceApp" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49 0-.24-.01-1.04-.01-1.89-2.78.62-3.37-1.21-3.37-1.21-.45-1.18-1.11-1.49-1.11-1.49-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.89 1.57 2.34 1.12 2.91.86.09-.66.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.72 0 0 .84-.27 2.75 1.05a9.3 9.3 0 0 1 5 0c1.9-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.46.1 2.72.64.72 1.03 1.63 1.03 2.75 0 3.93-2.35 4.8-4.58 5.05.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="contact">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-num">05</span>
+      <div>
+        <h2 class="section-title" data-i18n="contact.title">Contacto</h2>
+        <div class="section-tag" data-i18n="contact.tag">// hablemos</div>
+      </div>
+    </div>
+
+    <div class="contact-layout reveal">
+      <div class="contact-card">
+        <div>
+          <h2 data-i18n="contact.card.title">¿Buscas un/a becario/a con ganas de aprender?</h2>
+          <p data-i18n="contact.card.desc">Estoy disponible para prácticas / convenio de cooperación educativa. Escríbeme, estaré encantado de charlar.</p>
+        </div>
+        <div class="contact-links">
+          <a href="mailto:Joel8RM@gmail.com">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+            Joel8RM@gmail.com
+          </a>
+          <a href="https://github.com/JoelUPCRamos" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49 0-.24-.01-1.04-.01-1.89-2.78.62-3.37-1.21-3.37-1.21-.45-1.18-1.11-1.49-1.11-1.49-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.89 1.57 2.34 1.12 2.91.86.09-.66.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.72 0 0 .84-.27 2.75 1.05a9.3 9.3 0 0 1 5 0c1.9-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.46.1 2.72.64.72 1.03 1.63 1.03 2.75 0 3.93-2.35 4.8-4.58 5.05.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg>
+            github.com/JoelUPCRamos
+          </a>
+          <a href="https://www.linkedin.com/in/joel-ramos-mej%C3%ADas-73a8862b5" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 5a1.94 1.94 0 1 1-3.88 0 1.94 1.94 0 0 1 3.88 0zM3.36 8.75h3.5V21h-3.5V8.75zM9.6 8.75h3.36v1.68h.05c.47-.88 1.6-1.8 3.3-1.8 3.53 0 4.18 2.32 4.18 5.34V21h-3.5v-6.34c0-1.51-.03-3.46-2.1-3.46-2.1 0-2.42 1.64-2.42 3.35V21H9.6V8.75z"/></svg>
+            LinkedIn — Joel Ramos Mejías
+          </a>
+        </div>
+      </div>
+
+      <form class="contact-form" id="contactForm" action="https://formspree.io/f/xwvdynza" method="POST">
+        <div class="form-field">
+          <label for="cf-name" data-i18n="contact.form.name.label">Nombre</label>
+          <input type="text" id="cf-name" name="name" required>
+        </div>
+        <div class="form-field">
+          <label for="cf-email" data-i18n="contact.form.email.label">Email</label>
+          <input type="email" id="cf-email" name="email" required>
+        </div>
+        <div class="form-field">
+          <label for="cf-message" data-i18n="contact.form.message.label">Mensaje</label>
+          <textarea id="cf-message" name="message" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="form-submit" id="cf-submit" data-i18n="contact.form.submit">Enviar mensaje</button>
+        <div class="form-status" id="cf-status"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span data-i18n="footer.text">Diseñado &amp; construido por Joel Ramos Mejías</span> — <span id="year"></span>
+</footer>
+
+<script>
+  // Reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // ---------- i18n ----------
+  const TRANSLATIONS = {
+    'nav.about': { es: 'sobre-mi', en: 'about-me' },
+    'nav.skills': { es: 'habilidades', en: 'skills' },
+    'nav.education': { es: 'formacion', en: 'education' },
+    'nav.projects': { es: 'proyectos', en: 'projects' },
+    'nav.contact': { es: 'contacto', en: 'contact' },
+
+    'hero.eyebrow': { es: 'DISPONIBLE PARA PRÁCTICAS', en: 'AVAILABLE FOR INTERNSHIPS' },
+    'hero.role': { es: 'Ingeniería Informática', en: 'Computer Engineering' },
+    'hero.lede': { es: 'Estudiante de Ingeniería Informática en la UPC · EPSEVG, en búsqueda activa de prácticas donde aportar y seguir aprendiendo sobre desarrollo de software y sistemas.', en: 'Computer Engineering student at UPC · EPSEVG, actively looking for an internship where I can contribute and keep learning about software and systems development.' },
+    'hero.cta.talk': { es: 'Hablemos →', en: "Let's talk →" },
+    'hero.cta.cv': { es: 'Descargar CV', en: 'Download CV' },
+    'hero.cta.github': { es: 'Ver GitHub', en: 'View GitHub' },
+
+    'about.title': { es: 'Sobre mí', en: 'About me' },
+    'about.tag': { es: '// perfil', en: '// profile' },
+    'about.p1': { es: 'Soy estudiante de Ingeniería Informática en la EPSEVG (UPC), y estoy en la recta final de mi formación en busca de unas prácticas donde poder aplicar lo aprendido durante la carrera en un entorno profesional real.', en: "I'm a Computer Engineering student at EPSEVG (UPC), currently in the final stretch of my degree and looking for an internship where I can apply what I've learned in a real professional environment." },
+    'about.p2': { es: 'A lo largo del grado he trabajado con distintas áreas de la informática: programación en varios lenguajes, bases de datos, sistemas y redes, y desarrollo de aplicaciones. Me interesa especialmente el desarrollo de software y todo lo relacionado con backend y bases de datos, aunque tengo curiosidad por explorar distintos campos antes de especializarme.', en: "Throughout the degree I've worked across different areas of computing: programming in several languages, databases, systems and networks, and application development. I'm particularly interested in software development, backend and databases, though I'm curious to explore other fields before specializing." },
+    'about.p3': { es: 'Busco un equipo donde pueda seguir aprendiendo, aportar valor desde el primer día y crecer como ingeniero.', en: "I'm looking for a team where I can keep learning, contribute value from day one, and grow as an engineer." },
+    'about.fact.uni.label': { es: 'Universidad', en: 'University' },
+    'about.fact.degree.label': { es: 'Titulación', en: 'Degree' },
+    'about.fact.degree.value': { es: 'Grado en Ingeniería Informática', en: 'Computer Engineering Degree' },
+    'about.fact.looking.label': { es: 'Buscando', en: 'Looking for' },
+    'about.fact.looking.value': { es: 'Prácticas / Convenio de Cooperación Educativa', en: 'Internship / Cooperative Education Agreement' },
+    'about.fact.location.label': { es: 'Ubicación', en: 'Location' },
+
+    'skills.title': { es: 'Habilidades técnicas', en: 'Technical skills' },
+    'skills.tag': { es: '// tecnologías aprendidas durante el grado', en: '// technologies learned during the degree' },
+    'skills.cat.languages': { es: 'lenguajes', en: 'languages' },
+    'skills.cat.databases': { es: 'bases-de-datos', en: 'databases' },
+    'skills.cat.systems': { es: 'sistemas-y-redes', en: 'systems-and-networks' },
+    'skills.cat.dev': { es: 'desarrollo', en: 'development' },
+    'skills.cat.interests': { es: 'areas-de-interes', en: 'areas-of-interest' },
+    'skills.cat.web': { es: 'web', en: 'web' },
+    'skills.tag.relational': { es: 'Modelado relacional', en: 'Relational modeling' },
+    'skills.tag.os': { es: 'Sistemas Operativos', en: 'Operating Systems' },
+    'skills.tag.arch': { es: 'Arquitectura de computadores', en: 'Computer architecture' },
+    'skills.tag.structures': { es: 'Estructuras de datos', en: 'Data structures' },
+    'skills.tag.algorithms': { es: 'Algoritmia', en: 'Algorithms' },
+    'skills.tag.softeng': { es: 'Ingeniería del software', en: 'Software engineering' },
+    'skills.tag.ai': { es: 'Inteligencia Artificial', en: 'Artificial Intelligence' },
+
+    'education.title': { es: 'Formación', en: 'Education' },
+    'education.tag': { es: '// trayectoria académica', en: '// academic background' },
+    'education.item1.title': { es: 'Grado en Ingeniería Informática', en: 'Computer Engineering Degree' },
+    'education.item1.desc': { es: 'Formación en programación, algoritmia, estructuras de datos, arquitectura de computadores, sistemas operativos, redes, bases de datos, ingeniería del software, ciberseguridad e inteligencia artificial.', en: 'Training in programming, algorithms, data structures, computer architecture, operating systems, networks, databases, software engineering, cybersecurity and artificial intelligence.' },
+    'education.item2.title': { es: 'Búsqueda de prácticas', en: 'Looking for an internship' },
+    'education.item2.meta': { es: 'Actualidad', en: 'Present' },
+    'education.item2.desc': { es: 'Buscando una empresa donde realizar el convenio de cooperación educativa y seguir formándome como ingeniero informático.', en: 'Looking for a company to carry out my cooperative education agreement and keep growing as a computer engineer.' },
+
+    'projects.title': { es: 'Proyectos', en: 'Projects' },
+    'projects.tag': { es: '// 3 proyectos destacados', en: '// 3 featured projects' },
+    'proj.gedia.tagpill': { es: 'proyecto_01 · cliente real', en: 'project_01 · real client' },
+    'proj.gedia.title': { es: 'Formación VR para nuevos operarios', en: 'VR training for new operators' },
+    'proj.gedia.desc': { es: 'Simulador de Realidad Virtual en Unity que recrea una de las operaciones de montaje reales de la planta de GEDIA. Está gamificado con un modo práctica para aprender el proceso sin presión, y un modo examen que evalúa al operario contando errores y midiendo el tiempo, para determinar si está listo para incorporarse al puesto real.', en: 'Virtual Reality simulator built in Unity that recreates one of the real assembly operations at the GEDIA plant. It is gamified with a practice mode to learn the process without pressure, and an exam mode that evaluates the operator by counting errors and timing the task, to determine whether they are ready to join the real workstation.' },
+    'proj.gedia.viewmore': { es: 'Ver detalle →', en: 'View detail →' },
+    'proj.gedia.private': { es: 'Repositorio privado', en: 'Private repository' },
+
+    'proj.oust.tagpill': { es: 'proyecto_02 · proyecto académico', en: 'project_02 · academic project' },
+    'proj.oust.title': { es: 'IA para el juego de tablero Oust', en: 'AI for the Oust board game' },
+    'proj.oust.desc': { es: 'Proyecto final de la asignatura PROP (Projecte de Programació) de la UPC: implementación en Java del juego de tablero Oust junto con una inteligencia artificial basada en el algoritmo Minimax con Iterative Deepening Search (IDS), capaz de jugar partidas completas contra un humano u otra IA.', en: "Final project for the PROP course (Software Project) at UPC: a Java implementation of the Oust board game together with an AI based on the Minimax algorithm with Iterative Deepening Search (IDS), able to play full games against a human or another AI." },
+    'proj.oust.viewmore': { es: 'Ver detalle →', en: 'View detail →' },
+
+    'proj.gorace.tagpill': { es: 'proyecto_03 · proyecto en equipo', en: 'project_03 · team project' },
+    'proj.gorace.title': { es: 'GoRace — gestión de carreras populares', en: 'GoRace — running race management' },
+    'proj.gorace.desc': { es: 'Aplicación de escritorio para la gestión de carreras populares: creación y administración de carreras, inscripción de corredores, resultados y clasificaciones. Desarrollada en equipo de 7 personas con C++ y Windows Forms, con arquitectura en 3 capas y metodología ágil (Scrum) a lo largo de 3 iteraciones.', en: 'Desktop application for managing running races: race creation and administration, runner registration, results and rankings. Built by a 7-person team using C++ and Windows Forms, with a 3-layer architecture and agile (Scrum) methodology across 3 iterations.' },
+    'proj.gorace.viewmore': { es: 'Ver detalle →', en: 'View detail →' },
+
+    'contact.title': { es: 'Contacto', en: 'Contact' },
+    'contact.tag': { es: '// hablemos', en: "// let's talk" },
+    'contact.card.title': { es: '¿Buscas un/a becario/a con ganas de aprender?', en: 'Looking for an intern eager to learn?' },
+    'contact.card.desc': { es: 'Estoy disponible para prácticas / convenio de cooperación educativa. Escríbeme, estaré encantado de charlar.', en: "I'm available for internships / cooperative education agreements. Write to me, I'd love to chat." },
+    'contact.form.name.label': { es: 'Nombre', en: 'Name' },
+    'contact.form.email.label': { es: 'Email', en: 'Email' },
+    'contact.form.message.label': { es: 'Mensaje', en: 'Message' },
+    'contact.form.submit': { es: 'Enviar mensaje', en: 'Send message' },
+
+    'footer.text': { es: 'Diseñado &amp; construido por Joel Ramos Mejías', en: 'Designed &amp; built by Joel Ramos Mejías' }
+  };
+
+  const TERMINAL_PHRASES = {
+    es: ['whoami', './buscar-practicas --stack "C++, SQL, Python" --disponibilidad inmediata'],
+    en: ['whoami', './find-internship --stack "C++, SQL, Python" --availability immediate']
+  };
+
+  const LANG_KEY = 'joel-portfolio-lang';
+  let currentLang = 'es';
+
+  function setLang(lang){
+    currentLang = lang;
+    document.documentElement.lang = lang;
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      const entry = TRANSLATIONS[key];
+      if (entry && entry[lang]) el.innerHTML = entry[lang];
+    });
+
+    document.getElementById('langEs').classList.toggle('active', lang === 'es');
+    document.getElementById('langEn').classList.toggle('active', lang === 'en');
+
+    // restart terminal typing in the new language
+    phraseIndex = 0; charIndex = 0;
+    if (typedEl) typedEl.textContent = '';
+    clearTimeout(typingTimer);
+    typeLoop();
+
+    localStorage.setItem(LANG_KEY, lang);
+  }
+
+  document.getElementById('langEs').addEventListener('click', () => setLang('es'));
+  document.getElementById('langEn').addEventListener('click', () => setLang('en'));
+
+  // Terminal typing effect
+  const typedEl = document.getElementById('typed');
+  let phraseIndex = 0, charIndex = 0, typingTimer = null;
+
+  function typeLoop(){
+    if (!typedEl) return;
+    const phrases = TERMINAL_PHRASES[currentLang];
+    const current = phrases[phraseIndex];
+    if (charIndex <= current.length){
+      typedEl.textContent = current.slice(0, charIndex);
+      charIndex++;
+      typingTimer = setTimeout(typeLoop, 38);
+    } else {
+      typingTimer = setTimeout(() => {
+        charIndex = 0;
+        phraseIndex = (phraseIndex + 1) % phrases.length;
+        typedEl.textContent = '';
+        typingTimer = setTimeout(typeLoop, 400);
+      }, 1600);
+    }
+  }
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  const savedLang = localStorage.getItem(LANG_KEY);
+  setLang(savedLang === 'en' ? 'en' : 'es');
+
+  // Theme toggle (claro / oscuro)
+  const root = document.documentElement;
+  const themeBtn = document.getElementById('themeToggle');
+  const THEME_KEY = 'joel-portfolio-theme';
+
+  function applyTheme(theme){
+    root.setAttribute('data-theme', theme);
+  }
+
+  const savedTheme = localStorage.getItem(THEME_KEY);
+  if (savedTheme){
+    applyTheme(savedTheme);
+  } else {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    applyTheme(prefersDark ? 'dark' : 'light');
+  }
+
+  themeBtn.addEventListener('click', () => {
+    const current = root.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    localStorage.setItem(THEME_KEY, next);
+  });
+
+  // Contact form (Formspree)
+  const contactForm = document.getElementById('contactForm');
+  const cfStatus = document.getElementById('cf-status');
+  const cfSubmit = document.getElementById('cf-submit');
+
+  contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    cfSubmit.disabled = true;
+    cfStatus.className = 'form-status';
+    cfStatus.textContent = currentLang === 'en' ? 'Sending…' : 'Enviando…';
+
+    try {
+      const response = await fetch(contactForm.action, {
+        method: 'POST',
+        body: new FormData(contactForm),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (response.ok){
+        cfStatus.textContent = currentLang === 'en'
+          ? 'Message sent — thank you! I will reply soon.'
+          : '¡Mensaje enviado! Te responderé lo antes posible.';
+        cfStatus.classList.add('ok');
+        contactForm.reset();
+      } else {
+        throw new Error('Formspree error');
+      }
+    } catch (err) {
+      cfStatus.textContent = currentLang === 'en'
+        ? 'Something went wrong. Please email me directly.'
+        : 'Algo ha fallado. Escríbeme directamente por email.';
+      cfStatus.classList.add('err');
+    } finally {
+      cfSubmit.disabled = false;
+    }
+  });
+</script>
+
+</body>
+</html>
